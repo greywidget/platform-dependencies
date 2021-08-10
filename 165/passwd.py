@@ -1,4 +1,6 @@
-DEFAULT_SHELL = 'bash'
+from pprint import pprint as pp
+
+DEFAULT_SHELL = "bash"
 # https://github.com/avar/git-anyonecanedit-etc/blob/master/passwd
 PASSWD_OUTPUT = """root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/bin/sh
@@ -35,9 +37,19 @@ ssh-rsa:x:1004:1004::/home/ssh-rsa:/bin/bash
 artagnon:x:1005:1005:Ramkumar R,,,,Git GSOC:/home/artagnon:/bin/bash"""
 
 
-def get_users_for_shell(passwd_output: str = PASSWD_OUTPUT,
-                        grep_shell: str = DEFAULT_SHELL) -> list:
+def get_users_for_shell(
+    passwd_output: str = PASSWD_OUTPUT, grep_shell: str = DEFAULT_SHELL
+) -> list:
     """Match the passwd_output string for users with grep_shell.
-       Return a list of users.
+    Return a list of users.
     """
-    pass
+    items = [
+        row.split(":")[0]
+        for row in passwd_output.splitlines()
+        if row.split(":")[-1].endswith(f"/{grep_shell}")
+    ]
+    return items
+
+
+if __name__ == "__main__":
+    print(get_users_for_shell())
