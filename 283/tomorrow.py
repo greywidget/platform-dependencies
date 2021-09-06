@@ -1,9 +1,11 @@
-import datetime
+from datetime import date, timedelta
 
 
-def tomorrow(from_date=datetime.date.today()):
-    return from_date + datetime.timedelta(days=1)
+def tomorrow(from_date=None):
+    if from_date == None:
+        from_date = date.today()
+    return from_date + timedelta(days=1)
 
 
 if __name__ == "__main__":
-    print(tomorrow(datetime.date(2020, 7, 9)))
+    print(tomorrow(date(2020, 7, 9)))
