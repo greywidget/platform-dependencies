@@ -1,10 +1,8 @@
+from math import ceil
+
+
 def round_to_next(number: int, multiple: int):
-    remainder = number % multiple
-
-    if remainder == 0:
-        return number
-
-    return number + multiple - remainder
+    return ceil(number / multiple) * multiple
 
 
 if __name__ == "__main__":
