@@ -34,12 +34,17 @@ def calc_word_value(word):
     return sum([LETTER_SCORES.get(letter.upper(), 0) for letter in word])
 
 
+# def max_word_value(words):
+#     """Given a list of words calculate the word with the maximum value and return it"""
+#     best_score = 0
+#     best_word = ""
+#     for word in words:
+#         score = calc_word_value(word)
+#         if score > best_score:
+#             best_score, best_word = score, word
+#     return best_word
+
+
 def max_word_value(words):
     """Given a list of words calculate the word with the maximum value and return it"""
-    best_score = 0
-    best_word = ""
-    for word in words:
-        score = calc_word_value(word)
-        if score > best_score:
-            best_score, best_word = score, word
-    return best_word
+    return max(words, key=calc_word_value)
