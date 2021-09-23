@@ -69,3 +69,24 @@ def diehard_pybites(files=None):
     return Stats(
         user=users.most_common(1)[0][0], challenge=popular_challenges.most_common(1)[0]
     )
+
+
+# def diehard_pybites(files=None):
+#     if files is None:
+#         files = gen_files()
+
+#     users = Counter()
+#     popular_challenges = Counter()
+
+#     for dir_ in files:
+#         ch, user = dir_.split('/')
+
+#         if user in IGNORE:
+#             continue
+
+#         users[user] += 1
+#         popular_challenges[ch] += 1
+
+#     user = users.most_common(1)[0][0]
+#     challenge = popular_challenges.most_common(1)[0]
+#     return Stats(user=user, challenge=challenge)
