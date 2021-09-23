@@ -1,4 +1,4 @@
-from collections import Counter, namedtuple
+from collections import Counter, UserString, namedtuple
 import os
 import urllib.request
 
@@ -38,7 +38,7 @@ def gen_files(tempfile=tempfile):
     """
     with open(tempfile) as f:
         for line in f.readlines():
-            if line.endswith("False\n"):
+            if line.endswith("True\n"):
                 yield line.split(",")[0].lower()
 
 
@@ -56,11 +56,16 @@ def diehard_pybites(files=None):
     if files is None:
         files = gen_files()
 
-    users = Counter()
-    popular_challenges = Counter()
+    u, c = [], []
+    for line in files:
+        challenge, user = line.split("/")
+        if user not in IGNORE:
+            u.append(user)
+            c.append(challenge)
 
-    # your code
+    users = Counter(u)
+    popular_challenges = Counter(c)
 
-
-x = list(gen_files())
-print("the end")
+    return Stats(
+        user=users.most_common(1)[0][0], challenge=popular_challenges.most_common(1)[0]
+    )
