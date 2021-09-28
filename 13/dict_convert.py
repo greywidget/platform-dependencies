@@ -13,16 +13,12 @@ blog = dict(
 )
 
 # define namedtuple here
-BlogNT = namedtuple("BlogNT", "name founders started tags location site")
+Blog = namedtuple("Blog", blog.keys())
 
 
 def dict2nt(dict_):
-    return BlogNT._make(dict_.values())
+    return Blog(**dict_)
 
 
 def nt2json(nt):
     return json.dumps(nt._asdict(), default=str)
-
-
-if __name__ == "__main__":
-    named = dict2nt(blog)
