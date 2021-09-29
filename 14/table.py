@@ -9,4 +9,4 @@ SEPARATOR = " | "
 
 def generate_table(*args):
     for items in zip(*args):
-        yield (SEPARATOR.join([str(item) for item in items]))
+        yield SEPARATOR.join([str(item) for item in items])
