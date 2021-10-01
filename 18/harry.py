@@ -1,4 +1,5 @@
 import os
+import re
 import urllib.request
 from collections import Counter
 
@@ -19,13 +20,8 @@ def get_harry_most_common_word():
         stopwords = [line.strip() for line in f.readlines()]
 
     with open(harry_text, encoding="utf-8") as f:
-        harrywords = []
-        for line in f.readlines():
-            for word in line.split():
-                fword = "".join(
-                    [char for char in word.strip().lower() if char.isalpha()]
-                )
-                if fword and fword not in stopwords:
-                    harrywords.append(fword)
-    counter = Counter(harrywords)
+        # Use re to replace non alpha chars with nothing e.g strip them out
+        words = [re.sub(r"\W+", r"", word) for word in f.read().lower().split()]
+        words = [word for word in words if word.strip() and word not in stopwords]
+        counter = Counter(words)
     return counter.most_common(1)[0]
