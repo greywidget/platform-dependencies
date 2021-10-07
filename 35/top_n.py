@@ -1,6 +1,5 @@
 from datetime import datetime
 import heapq
-from pprint import pprint as pp
 
 numbers = [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6]
 dates = [
@@ -15,7 +14,6 @@ dates = [
     datetime(2018, 11, 19, 0, 0),
     datetime(2017, 7, 7, 0, 0),
 ]
-# static (outdated) copy of:
 # https://www.forbes.com/celebrities/list
 earnings_mln = [
     {"name": "Kevin Durant", "earnings": 60.6},
@@ -32,16 +30,12 @@ earnings_mln = [
 
 
 def get_largest_number(numbers, n=3):
-    heapq.heapify(numbers)
     return heapq.nlargest(n, numbers)
 
 
 def get_latest_dates(dates, n=3):
-    heapq.heapify(dates)
     return heapq.nlargest(n, dates)
 
 
 def get_highest_earnings(earnings_mln, n=3):
-    earnings_dict = [(earnings["earnings"], earnings) for earnings in earnings_mln]
-    heapq.heapify(earnings_dict)
-    return [item[1] for item in heapq.nlargest(n, earnings_dict)]
+    return heapq.nlargest(n, earnings_mln, key=lambda x: x["earnings"])
