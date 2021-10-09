@@ -37,8 +37,3 @@ def calc_total_course_duration(timestamps):
         total_mins += int(mins_secs[0])
         total_secs += int(mins_secs[1])
     return str(timedelta(minutes=total_mins, seconds=total_secs))
-
-
-if __name__ == "__main__":
-    tms = get_all_timestamps()
-    calc_total_course_duration(tms)
