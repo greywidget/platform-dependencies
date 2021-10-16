@@ -1,4 +1,3 @@
-from math import sqrt
 class MultiplicationTable:
 
     def __init__(self, length):
@@ -24,4 +23,5 @@ class MultiplicationTable:
 
     def calc_cell(self, x, y):
         """Takes x and y coords and returns the re-calculated result"""
-        return self._table[x-1][y-1]
+        _ = self._table[x-1][y-1]
+        return x * y
