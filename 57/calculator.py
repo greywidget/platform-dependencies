@@ -2,15 +2,20 @@ import argparse
 from operator import add, sub, mul, truediv
 from functools import reduce
 
+
 def calculator(operation, numbers):
     """TODO 1:
-       Create a calculator that takes an operation and list of numbers.
-       Perform the operation returning the result rounded to 2 decimals"""
-    if operation == 'add':
+    Create a calculator that takes an operation and list of numbers.
+    Perform the operation returning the result rounded to 2 decimals"""
+
+    if not numbers:
+        raise SystemExit
+
+    if operation == "add":
         oper = add
-    elif operation == 'mul':
+    elif operation == "mul":
         oper = mul
-    elif operation == 'sub':
+    elif operation == "sub":
         oper = sub
     else:
         oper = truediv
@@ -20,22 +25,26 @@ def calculator(operation, numbers):
 
 def create_parser():
     """TODO 2:
-       Create an ArgumentParser object:
-       - have one operation argument,
-       - have one or more integers that can be operated on.
-       Returns a argparse.ArgumentParser object.
+    Create an ArgumentParser object:
+    - have one operation argument,
+    - have one or more integers that can be operated on.
+    Returns a argparse.ArgumentParser object.
 
-       Note that type=float times out here so do the casting in the calculator
-       function above!"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-a", "--add", help="increase output verbosity", nargs="*")
+    Note that type=float times out here so do the casting in the calculator
+    function above!"""
+    parser = argparse.ArgumentParser(description="A simple calculator")
+    parser.add_argument("-a", "--add", help="Sums numbers", nargs="*", type=float)
+    parser.add_argument("-s", "--sub", help="Subtracts numbers", nargs="*", type=float)
+    parser.add_argument("-m", "--mul", help="Multiplies numbers", nargs="*", type=float)
+    parser.add_argument("-d", "--div", help="Divides numbers", nargs="*", type=float)
+    return parser
 
 
 def call_calculator(args=None, stdout=False):
     """Provided/done:
-       Calls calculator with provided args object.
-       If args are not provided get them via create_parser,
-       if stdout is True print the result"""
+    Calls calculator with provided args object.
+    If args are not provided get them via create_parser,
+    if stdout is True print the result"""
     parser = create_parser()
 
     if args is None:
@@ -56,9 +65,3 @@ def call_calculator(args=None, stdout=False):
             print(res)
 
         return res
-
-
-if __name__ == '__main__':
-    # call_calculator(stdout=True)
-    create_parser()
-    print(calculator('div', [2.2, 7, 1.1]))
