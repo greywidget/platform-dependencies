@@ -2,9 +2,8 @@ class RecordScore:
     """Class to track a game's maximum score"""
 
     def __init__(self):
-        self.max_score = None
+        self._score = float("-inf")
 
-    def __call__(self, score):
-        if not self.max_score or score > self.max_score:
-            self.max_score = score
-        return self.max_score
+    def __call__(self, num):
+        self._score = max(self._score, num)
+        return self._score
