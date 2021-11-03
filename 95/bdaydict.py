@@ -12,4 +12,4 @@ class BirthdayDict(dict):
             (item.month, item.day) for item in self.values()
         ]:
             print(MSG.format(name))
-        dict.__setitem__(self, name, birthday)
+        super().__setitem__(name, birthday)
