@@ -23,14 +23,15 @@ def get_us_bank_holidays(content=content):
     keys -> months and values -> list of bank holidays"""
     soup = BeautifulSoup(content, "html.parser")
     main_table = soup.find("table", "list-table")
-    links = main_table.find_all("tr", ["holiday", "regional"])
+    links = main_table.find_all("tr")
     for link in links:
-        holiday = link.find("a").string.strip()
-        month = link.find("time").string[5:7]
-        holidays[month].append(holiday)
+        if link.has_attr("class") and link["class"][0] in [
+            "holiday",
+            "regional",
+            "publicholiday",
+        ]:
+            holiday = link.find("a").string.strip()
+            month = link.find("time").string[5:7]
+            holidays[month].append(holiday)
 
     return holidays
-
-
-if __name__ == "__main__":
-    get_us_bank_holidays(content)

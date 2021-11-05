@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import re
 
 """See https://www.crummy.com/software/BeautifulSoup/bs4/doc/#quick-start
@@ -132,10 +132,30 @@ soup = BeautifulSoup(html_doc, "html.parser")
 #     print(tag.name)
 
 
-def has_class_but_no_id(tag):
-    return tag.has_attr("class") and not tag.has_attr("id")
+# def has_class_but_no_id(tag):
+#     return tag.has_attr("class") and not tag.has_attr("id")
 
 
-items = soup.find_all(has_class_but_no_id)
+# items = soup.find_all(has_class_but_no_id)
+# print(len(items))
+# for item in items:
+#     print(item)
+
+
+# def not_lacie(href):
+#     return href and not re.compile("lacie").search(href)
+
+# items = soup.find_all(href=not_lacie)
+# for item in items:
+#     print(item)
+
+
+def surrounded_by_strings(tag):
+    return isinstance(tag.next_element, NavigableString) and isinstance(
+        tag.previous_element, NavigableString
+    )
+
+
+items = soup.find_all(surrounded_by_strings)
 for item in items:
-    print(item)
+    print(item.name)
