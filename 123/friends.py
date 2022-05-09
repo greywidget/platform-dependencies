@@ -46,6 +46,25 @@ def get_friend_with_most_friends(friendships, users=users):
     return best
 
 
+# PyBites solution
+def get_friend_with_most_friends2(friendships, users=users):
+    """Receives the friendships list of user ID pairs,
+    parse it to see who has most friends, return a tuple
+    of (name_friend_with_most_friends, his_or_her_friends)"""
+    user_friends = defaultdict(list)  # use list, set would delete dups
+    for p1, p2 in friendships:
+        p1_name, p2_name = users.get(p1), users.get(p2)
+        # use unique IDs as keys, not names
+        user_friends[p1].append(p2_name)
+        user_friends[p2].append(p1_name)
+
+    idx, friends = sorted(user_friends.items(), key=lambda x: len(x[1]), reverse=True)[
+        0
+    ]
+    breakpoint()
+    return users.get(idx), friends
+
+
 if __name__ == "__main__":
-    result = get_friend_with_most_friends(friendships, users=users)
+    result = get_friend_with_most_friends2(friendships, users=users)
     print(result)
