@@ -27,14 +27,9 @@ def get_top_books(content=None):
 
     soup = Soup(content, "html.parser")
 
-    titles = [link.string for link in soup.find_all("a") if AMAZON in link["href"]]
+    books = [link.text.strip() for link in soup.find_all("a") if AMAZON in link["href"]]
 
-    counter = Counter(titles)
-    return [
-        (text.strip() if text else None, count)
-        for text, count in counter.items()
-        if count >= MIN_COUNT
-    ]
+    return [book for book in Counter(books).most_common() if book[1] >= MIN_COUNT]
 
 
 def main():
