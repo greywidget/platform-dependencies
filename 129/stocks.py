@@ -36,11 +36,9 @@ def get_industry_cap(industry):
     return a float with 2 digit precision"""
     return round(
         sum(
-            [
-                _cap_str_to_mln_float(item.get("cap"))
-                for item in data
-                if item.get("industry") == industry
-            ]
+            _cap_str_to_mln_float(item.get("cap"))
+            for item in data
+            if item.get("industry") == industry
         ),
         2,
     )
