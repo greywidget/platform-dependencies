@@ -19,3 +19,11 @@ def athletes_most_medals(data: str = data) -> pd.Series:
     )
 
     return df_male.append(df_female)
+
+    # Pybites Solution was a lot simpler...
+    # df = pd.read_csv(data)
+    # males = df[df["Gender"] == "Men"]
+    # females = df[df["Gender"] == "Women"]
+    # best_male = males["Athlete"].value_counts().head(1)
+    # best_female = females["Athlete"].value_counts().head(1)
+    # return best_male.append(best_female)
