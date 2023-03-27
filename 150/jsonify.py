@@ -1,5 +1,4 @@
 import json
-from operator import itemgetter
 
 members = """
 id,first_name,last_name,email
@@ -17,13 +16,12 @@ id,first_name,last_name,email
 
 
 def convert_to_json(members=members):
-    getter = itemgetter(0, 1, 2, 3)
     lines = members.strip().splitlines()
     keys = lines[0].split(",")
     data = []
     for line in lines[1:]:
         line = line.replace("|", ",")
         line = line.replace(";", ",")
-        data.append(dict(zip(getter(keys), getter(line.split(",")))))
+        data.append(dict(zip(keys, line.split(","))))
 
     return json.dumps(data)
