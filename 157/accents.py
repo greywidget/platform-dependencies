@@ -5,7 +5,7 @@ def filter_accents(text):
     """Return a sequence of accented characters found in
     the passed in lowercased text string
     """
-    return sorted(letter for letter in text.lower() if decomposition(letter))
+    return {c for c in text.lower() if decomposition(c)}
 
 
 text = (
