@@ -1,5 +1,7 @@
 from operator import add, sub, mul, truediv
 
+ops = {"+": add, "-": sub, "*": mul, "/": truediv}
+
 
 def simple_calculator(calculation):
     """Receives 'calculation' and returns the calculated result,
@@ -14,9 +16,9 @@ def simple_calculator(calculation):
     Make sure you convert both numbers to ints.
     If bad data is passed in, raise a ValueError.
     """
-    ops = {"+": add, "-": sub, "*": mul, "/": truediv}
     try:
         num1, oper, num2 = calculation.split()
         return ops[oper](int(num1), int(num2))
-    except:
-        raise ValueError("Invalid Argument passed")
+    except (KeyError, ValueError, ZeroDivisionError) as exc:
+        print(exc)
+        raise ValueError
