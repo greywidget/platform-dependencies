@@ -2,6 +2,12 @@ from datetime import datetime, timedelta
 import re
 
 NOW = datetime(year=2019, month=2, day=6, hour=22, minute=0, second=0)
+TIME_UNITS = dict(
+    d=lambda x: timedelta(days=x),
+    h=lambda x: timedelta(hours=x),
+    m=lambda x: timedelta(minutes=x),
+    s=lambda x: timedelta(seconds=x),
+)
 
 
 def add_todo(delay_time: str, task: str, start_time: datetime = NOW) -> str:
@@ -19,27 +25,14 @@ def add_todo(delay_time: str, task: str, start_time: datetime = NOW) -> str:
     >>> add_todo("1h 10m", "Wash my car")
     >>> "Wash my car @ 2019-02-06 23:10:00"
     """
-    delta = timedelta(seconds=0)
+    target_dt = start_time
 
-    if m := re.search(r"(\d+)d(\s|s|$)", delay_time):
-        delta += timedelta(days=int(m.group(1)))
-    if m := re.search(r"(\d+)h\s", delay_time):
-        delta += timedelta(hours=int(m.group(1)))
-    if m := re.search(r"(\d+)m(\s|$)", delay_time):
-        delta += timedelta(minutes=int(m.group(1)))
-    if m := re.search(r"(\d+)(\s|s|$)", delay_time):
-        delta += timedelta(seconds=int(m.group(1)))
-
-    return f"{task} @ {(start_time + delta).strftime('%Y-%m-%d %H:%M:%S')}"
-
-    # target_dt = start_time
-
-    # # if no time unit passed = int, return result
-    # try:
-    #     target_dt += TIME_UNITS['s'](int(delay_time))
-    # except ValueError:
-    #     matches = re.findall(r'(\d+)([dhms])', delay_time)
-    #     for amount, unit in matches:
-    #         target_dt += TIME_UNITS[unit](int(amount))
-    # finally:
-    #     return f'{task} @ {target_dt}'
+    # if no time unit passed = int, return result
+    try:
+        target_dt += TIME_UNITS["s"](int(delay_time))
+    except ValueError:
+        matches = re.findall(r"(\d+)([dhms])", delay_time)
+        for amount, unit in matches:
+            target_dt += TIME_UNITS[unit](int(amount))
+    finally:
+        return f"{task} @ {target_dt}"
