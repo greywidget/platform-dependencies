@@ -31,3 +31,15 @@ def add_todo(delay_time: str, task: str, start_time: datetime = NOW) -> str:
         delta += timedelta(seconds=int(m.group(1)))
 
     return f"{task} @ {(start_time + delta).strftime('%Y-%m-%d %H:%M:%S')}"
+
+    # target_dt = start_time
+
+    # # if no time unit passed = int, return result
+    # try:
+    #     target_dt += TIME_UNITS['s'](int(delay_time))
+    # except ValueError:
+    #     matches = re.findall(r'(\d+)([dhms])', delay_time)
+    #     for amount, unit in matches:
+    #         target_dt += TIME_UNITS[unit](int(amount))
+    # finally:
+    #     return f'{task} @ {target_dt}'
