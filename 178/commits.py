@@ -1,6 +1,6 @@
 import os
 import re
-from collections import Counter, defaultdict
+from collections import Counter
 from typing import Tuple
 from urllib.request import urlretrieve
 
@@ -31,7 +31,7 @@ def get_min_max_amount_of_commits(
 
     Returns a tuple of (least_active_month, most_active_month)
     """
-    year_count = defaultdict(int)
+    year_count: Counter = Counter()
 
     with open(commit_log) as f:
         data = f.readlines()
@@ -39,15 +39,17 @@ def get_min_max_amount_of_commits(
     for line in data:
         date_str, count_str = line.split("|")
         commit_date = parse(date_str[8:])
-        if not year or commit_date.year == year:
-            m = re.search(INSERTIONS, count_str)
-            insertions = int(m.group(1)) if m else 0
-            m = re.search(DELETIONS, count_str)
-            deletions = int(m.group(1)) if m else 0
-            key = f"{commit_date.year}-{commit_date.month:02d}"
-            year_count[key] += deletions + insertions
 
-    return (
-        min(year_count, key=year_count.get),
-        max(year_count, key=year_count.get),
-    )
+        if year and commit_date.year != year:
+            continue
+
+        m = re.search(INSERTIONS, count_str)
+        insertions = int(m.group(1)) if m else 0
+        m = re.search(DELETIONS, count_str)
+        deletions = int(m.group(1)) if m else 0
+
+        key = YEAR_MONTH.format(y=commit_date.year, m=commit_date.month)
+        year_count[key] += deletions + insertions
+
+    most_common = year_count.most_common()
+    return most_common[-1][0], most_common[0][0]
