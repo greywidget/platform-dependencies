@@ -22,39 +22,35 @@ class BiteStats:
     @property
     def number_bites_accessed(self) -> int:
         """Get the number of unique Bites accessed"""
-        return len(set(item["bite"] for item in self.rows))
+        return len({row["bite"] for row in self.rows})
 
     @property
     def number_bites_resolved(self) -> int:
         """Get the number of unique Bites resolved (completed=True)"""
-        return len(
-            set(item["bite"] for item in self.rows if item["completed"] == "True")
-        )
+        return len({row["bite"] for row in self.rows if row["completed"] == "True"})
 
     @property
     def number_users_active(self) -> int:
         """Get the number of unique users in the data set"""
-        return len(set(item["user"] for item in self.rows))
+        return len({row["user"] for row in self.rows})
 
     @property
     def number_users_solving_bites(self) -> int:
         """Get the number of unique users that resolved
         one or more Bites"""
-        return len(
-            set(item["user"] for item in self.rows if item["completed"] == "True")
-        )
+        return len({row["user"] for row in self.rows if row["completed"] == "True"})
 
     @property
     def top_bite_by_number_of_clicks(self) -> str:
         """Get the Bite that got accessed the most
         (= in most rows)"""
-        counter = Counter(item["bite"] for item in self.rows)
+        counter = Counter(row["bite"] for row in self.rows)
         return int(counter.most_common(1)[0][0])
 
     @property
     def top_user_by_bites_completed(self) -> str:
         """Get the user that completed the most Bites"""
         counter = Counter(
-            item["user"] for item in self.rows if item["completed"] == "True"
+            row["user"] for row in self.rows if row["completed"] == "True"
         )
         return counter.most_common(1)[0][0]
