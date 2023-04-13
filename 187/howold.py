@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from dateutil import parser
 
-import dateutil
+from dateutil.parser import parse
+from dateutil.relativedelta import relativedelta
 
 
 @dataclass
@@ -24,5 +24,5 @@ def get_age(actor: Actor, movie: Movie) -> str:
     e.g.
     Wesley Snipes was 28 years old when New Jack City came out.
     """
-    days_diff = parser.parse(movie.release_date) - parser.parse(actor.born)
-    return f"{actor.name} was {days_diff.days // 365} years old when {movie.title} came out."
+    age = relativedelta(parse(movie.release_date), parse(actor.born))
+    return f"{actor.name} was {age.years} years old when {movie.title} came out."
