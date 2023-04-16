@@ -85,31 +85,23 @@ def number_of_players_from_duke():
 def avg_years_active_players_stanford():
     """Return the average years that players from "Stanford University
     are active ("active" column)"""
-    stmt = (
-        "select name, cast(active as real) "
-        "from players "
-        "where college = 'Stanford University' "
-    )
+    stmt = "select avg(active) from players where college = 'Stanford University'"
     cur.execute(stmt)
 
-    rows = cur.fetchall()
-    total = sum(item[1] for item in rows)
+    rows = cur.fetchone()
 
-    return round(total / len(rows), 2)
+    return rows[0]
 
 
 def year_with_most_new_players():
     """Return the year with the most new players.
     Hint: you can use GROUP BY on the year column.
     """
-    # stmt = "select * from players where first_year <> '0'"
-
     stmt = (
-        "select year, count(first_year) "
+        "select year, count(name) "
         "from players "
-        "where first_year = '0'"
         "group by year "
-        "order by count(first_year) desc "
+        "order by count(name) desc "
         "limit 1"
     )
     cur.execute(stmt)
