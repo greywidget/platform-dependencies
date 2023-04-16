@@ -63,14 +63,13 @@ def player_with_max_points_per_game():
     """The player with highest average points per game (don't forget to CAST to
     numeric in your SQL query)"""
     stmt = (
-        "select name, cast(avg_points as real) "
+        "select name "
         "from players "
-        "group by name "
         "order by cast(avg_points as real) desc "
         "limit 1"
     )
     cur.execute(stmt)
-    player, _ = cur.fetchone()
+    player = cur.fetchone()[0]
     return player
 
 
