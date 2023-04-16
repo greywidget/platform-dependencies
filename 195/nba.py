@@ -88,7 +88,6 @@ def avg_years_active_players_stanford():
     cur.execute(stmt)
 
     rows = cur.fetchone()
-
     return rows[0]
 
 
