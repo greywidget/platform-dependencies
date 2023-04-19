@@ -1,18 +1,30 @@
+import json
 import requests
 
 
 def nxapi_show_version():
-    url =  """ please fill in """
-    switchuser = """ please fill in """
-    switchpassword = """ please fill in """
+    url = "https://sbx-nxos-mgmt.cisco.com"
+    switchuser = "admin"
+    switchpassword = "Admin_1234!"
 
-    http_headers = {""" please fill in """}
-    payload = [{"jsonrpc": "2.0",
-                "method": """ please fill in """,
-                "params": {"cmd": """ please fill in """,
-                           "version": 1}, "id": 1}]
+    http_headers = {"content-type": "application/json-rpc"}
+    payload = [
+        {
+            "jsonrpc": "2.0",
+            "method": "cli",
+            "params": {"cmd": "show hardware", "version": 1},
+            "id": 1,
+        }
+    ]
     # 1. use requests to post to the switch
-    response = ...
+    response = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers=http_headers,
+        auth=(switchuser, switchpassword),
+        verify=False,
+    )
+    breakpoint()
 
     # 2. retrieve and return the kickstart_ver_str from the response
     # example response json:
@@ -27,6 +39,6 @@ def nxapi_show_version():
     return version
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     result = nxapi_show_version()
     print(result)
