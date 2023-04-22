@@ -1,14 +1,15 @@
 from urllib.request import urlretrieve
 import os
 from pathlib import Path
+from itertools import chain
 
 import gender_guesser.detector as gender
 from bs4 import BeautifulSoup as Soup
+from collections import Counter
 
 TMP = Path(os.getenv("TMP", "/tmp"))
 PYCON_HTML = TMP / "pycon2019.html"
-PYCON_PAGE = ('https://bites-data.s3.us-east-2.amazonaws.com/'
-              'pycon2019.html')
+PYCON_PAGE = "https://bites-data.s3.us-east-2.amazonaws.com/" "pycon2019.html"
 
 if not PYCON_HTML.exists():
     urlretrieve(PYCON_PAGE, PYCON_HTML)
@@ -20,21 +21,36 @@ def _get_soup(html=PYCON_HTML):
 
 def get_pycon_speaker_first_names(soup=None):
     """Parse the PYCON_HTML using BeautifulSoup, extracting all
-       speakers (class "speaker"). Note that some items contain
-       multiple speakers so you need to extract them.
-       Return a list of first names
+    speakers (class "speaker"). Note that some items contain
+    multiple speakers so you need to extract them.
+    Return a list of first names
     """
-    pass
+    if not soup:
+        soup = _get_soup()
+
+    speakers = soup.find_all("span", "speaker")
+    names = list(
+        chain(*[item.string.strip().replace("/", ",").split(",") for item in speakers])
+    )
+    first_names = [name.strip().split(" ")[0] for name in names]
+    return first_names
 
 
 def get_percentage_of_female_speakers(first_names):
     """Run gender_guesser on the names returning a percentage
-       of female speakers (female and mostly_female),
-       rounded to 2 decimal places."""
-    pass
+    of female speakers (female and mostly_female),
+    rounded to 2 decimal places."""
+    guesser = gender.Detector()
+    gender_count = Counter(guesser.get_gender(name) for name in first_names)
+    return round(
+        (gender_count["female"] + gender_count["mostly_female"])
+        / len(first_names)
+        * 100,
+        2,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     names = get_pycon_speaker_first_names()
     perc = get_percentage_of_female_speakers(names)
     print(perc)
