@@ -10,6 +10,5 @@ def sum_numbers(numbers):
     Task: use contextlib's suppress twice to make the code below more concise.
     """
     for i, j in zip(numbers, numbers[1:]):
-        with suppress(TypeError):
-            with suppress(ZeroDivisionError):
-                yield i / j
+        with suppress(TypeError, ZeroDivisionError):
+            yield i / j
