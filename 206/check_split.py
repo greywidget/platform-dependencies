@@ -1,4 +1,13 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_DOWN
+import re
+
+ONE_CENT = Decimal("0.01")
+NUMERIC = re.compile(r"[^\d.]")
+
+
+def strip_symbols(string, convert_percent=False):
+    dec = Decimal(NUMERIC.sub("", string))
+    return dec / 100 if convert_percent else dec
 
 
 def check_split(item_total, tax_rate, tip, people):
@@ -12,19 +21,16 @@ def check_split(item_total, tax_rate, tip, people):
     :return: tuple of (grand_total: str, splits: list)
              e.g. ('$10.00', [3.34, 3.33, 3.33])
     """
-    total_num = round(float(item_total.strip("$")), 2)
-    tax_rate_num = round(float(tax_rate.strip("%")), 2)
-    tip_num = int(tip.strip("%"))
+    item_total = strip_symbols(item_total)
+    tax_rate = strip_symbols(tax_rate, convert_percent=True)
+    tip = strip_symbols(tip, convert_percent=True)
 
-    tax_amt = round(total_num * tax_rate_num / 100, 2)
-    gross_amount = total_num + tax_amt
-    tip_amount = round(gross_amount * tip_num / 100, 2)
-    total_amount = Decimal(gross_amount + tip_amount)
-    split = Decimal(round(total_amount / people, 2))
+    sub_total = (item_total + item_total * tax_rate).quantize(ONE_CENT)
+    grand_total = (sub_total + sub_total * tip).quantize(ONE_CENT)
 
-    splits = [split for _ in range(people - 1)]
-    print(splits)
+    split = (grand_total / people).quantize(ONE_CENT, rounding=ROUND_DOWN)
+    extra_cents = (grand_total - split * people) / ONE_CENT
 
-    splits.append(round(total_amount - sum(splits), 2))
-
-    return f"${total_amount:.2f}", splits
+    return f"${grand_total}", [
+        split + ONE_CENT if i < extra_cents else split for i in range(people)
+    ]
