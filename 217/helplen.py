@@ -5,7 +5,11 @@ from types import BuiltinFunctionType
 
 def get_len_help_text(builtin: BuiltinFunctionType) -> int:
     """Receives a builtin, and returns the length of its help text.
-       You need to redirect stdout from the help builtin.
-       If the the object passed in is not a builtin, raise a ValueError.
+    You need to redirect stdout from the help builtin.
+    If the the object passed in is not a builtin, raise a ValueError.
     """
-    pass
+    if not isinstance(builtin, BuiltinFunctionType):
+        raise ValueError(f"{builtin} is not a builtin")
+    with redirect_stdout(StringIO()) as f:
+        help(builtin)
+        return len(f.getvalue())
