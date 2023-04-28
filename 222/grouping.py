@@ -15,14 +15,16 @@ def group(iterable, n):
       list: The list of groups of size n,
             where each group is a list of n elements.
     """
-    data = list(iterable)
-    ret = []
-    start = 0
-    while start < len(data):
-        it = islice(data, start, start + n)
-        ret.append(list(it))
-        start += n
+    # cast generator if necessary
+    if not isinstance(iterable, types.GeneratorType):
+        iterable = (i for i in iterable)
 
+    ret = []
+    while True:
+        row = list(islice(iterable, n))
+        if not row:
+            break
+        ret.append(row)
     return ret
 
 
