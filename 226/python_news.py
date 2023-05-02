@@ -57,3 +57,35 @@ def get_top_titles(url, top=5):
     entries = [Entry(title, points, comments) for title, points, comments in data]
     # return entries
     return sorted(entries, key=attrgetter("points", "comments"), reverse=True)[:top]
+
+
+# PyBites Solution below is less convoluted.
+# Note the use of title.find_next() - I didn't realise you could do something
+# like that - grab a tag and then call methods on that to find stuff that
+# comes after (or before) it in the document. See also next_elements()
+
+# def _get_titles(soup):
+#     return soup.find_all('span', {'class': 'title'})
+
+
+# def _get_entry(title):
+#     votes_and_comments = title.find_next('td').text
+#     title = title.text.strip()
+#     m = re.search(r'(\d+) points?.*(\d+) comments?',
+#                   votes_and_comments, re.DOTALL)
+#     points, comments = m.groups()
+#     return Entry(title, int(points), int(comments))
+
+
+# def get_top_titles(url, top=5):
+#     """Parse the titles (class 'title') using the soup object.
+#        Return a list of top (default = 5) titles ordered descending
+#        by number of points and comments.
+#     """
+#     soup = _create_soup_obj(url)
+
+#     ret = []
+#     for title in _get_titles(soup):
+#         ret.append(_get_entry(title))
+
+#     return sorted(ret, key=itemgetter(1, 2), reverse=True)[:top]
