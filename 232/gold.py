@@ -1,7 +1,6 @@
-from io import StringIO
 from typing import Tuple
 
-from pandas import DataFrame, Series, read_csv
+from pandas import DataFrame
 
 # https://pkgstore.datahub.io/core/gold-prices/annual_csv/data/343f626dd4f7bae813cfaac23fccd1bc/annual_csv.csv
 gold_prices = """
