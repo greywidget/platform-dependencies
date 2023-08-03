@@ -25,6 +25,7 @@ def years_gold_value_decreased(gold_prices: str = gold_prices) -> Tuple[int, int
     """Analyze gold_prices returning a tuple of the year the gold price
     decreased the most and the year the gold price increased the most.
     """
+
     data = gold_prices.strip().split()
     years = [item.split(",")[0][:4] for item in data]
     prices = [float(item.split(",")[1]) for item in data]
