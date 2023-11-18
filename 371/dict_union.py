@@ -13,4 +13,8 @@ def combine_and_count(a: dict, b: dict) -> dict:
       A dictionary with the contents of both.
       Values of any shared keys are summed.
     """
-    # Your code goes here.
+    merged = a | b
+    shared = set(a.keys() & b.keys())
+    for item in shared:
+        merged[item] += a[item]
+    return merged
