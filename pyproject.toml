@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dft"
+version = "0.0.1"
+authors = [
+  { name="Craig Richards", email="craig@greywidget.co.uk" },
+]
+description = "dft"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+]
+[project.optional-dependencies]
+dev = [
+]
+
+[project.urls]
+"Homepage" = "https://github.com/greywidget/dft"
+"Bug Tracker" = "https://github.com/greywidget/dft/issues"
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+disallow_incomplete_defs = true
+ignore_missing_imports = true
+
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
