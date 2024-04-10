@@ -20,6 +20,9 @@ class Bite:
     total_time: str
     avg_time: Decimal = None
 
+    def __post_init__(self):
+        self.avg_time = Decimal(self.total_time) / Decimal(self.nbr_tests)
+
 
 get_bite_details = itemgetter(0, 2, -3)
 
@@ -31,8 +34,6 @@ def get_bite_with_fastest_avg_test(timings: list) -> str:
         if "passed" in line:
             chunks = line.strip().split(" ")
             bite = Bite(*get_bite_details(chunks))
-            avg_time = Decimal(bite.total_time) / Decimal(bite.nbr_tests)
-            if not fastest_bite or avg_time < fastest_bite.avg_time:
+            if not fastest_bite or bite.avg_time < fastest_bite.avg_time:
                 fastest_bite = bite
-                fastest_bite.avg_time = avg_time
     return fastest_bite.bite
