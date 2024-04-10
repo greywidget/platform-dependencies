@@ -5,8 +5,6 @@ from operator import itemgetter
 from pathlib import Path
 from urllib.request import urlretrieve
 
-from rich import print
-
 tmp = Path(os.getenv("TMP", "/tmp"))
 timings_log = tmp / "pytest_timings.out"
 if not timings_log.exists():
@@ -38,8 +36,3 @@ def get_bite_with_fastest_avg_test(timings: list) -> str:
                 fastest_bite = bite
                 fastest_bite.avg_time = avg_time
     return fastest_bite.bite
-
-
-if __name__ == "__main__":
-    lines = [line for line in timings_log.read_text().strip().split("\n")]
-    print(get_bite_with_fastest_avg_test(lines))
