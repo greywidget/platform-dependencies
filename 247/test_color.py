@@ -9,7 +9,13 @@ def gen():
     return color.gen_hex_color()
 
 
-@patch("color.sample")
-def test_gen_hex_color(mock_fun, gen):
-    mock_fun.return_value = (28, 128, 228)
-    assert (next(gen)) == "#1C80E4"
+def _side_effect(*args):
+    if args == (range(0, 256), 3):
+        return (28, 128, 228)
+    else:
+        return (0, 0, 0)
+
+
+def test_gen_hex_color(gen):
+    with patch("color.sample", side_effect=_side_effect):
+        assert (next(gen)) == "#1C80E4"
