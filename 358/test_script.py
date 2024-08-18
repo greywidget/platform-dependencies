@@ -11,7 +11,7 @@ def runner() -> CliRunner:
 def test_app(runner):
     result = runner.invoke(app, "Boris")
     assert result.exit_code == 0
-    assert "Hello Boris" in result.stdout
+    assert "Hello Boris!" == result.stdout.strip()
 
 
 def test_help(runner):
