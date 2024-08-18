@@ -6,7 +6,7 @@ def sum_numbers(a: int, b: int):
 
 
 app = typer.Typer()
-state = {}  # TODO: edit this
+state = {"verbose": False}
 
 
 @app.command()
@@ -17,8 +17,10 @@ def sum(
     """Command that allows you to add two numbers."""
     sum_ab = sum_numbers(a, b)
 
-    # TODO: add an if-else to write verbose output as a function of the callback setting
-    print(f"The sum is {sum_ab}")
+    if state["verbose"]:
+        print(f"Will write verbose output\nThe sum is {sum_ab}")
+    else:
+        print(f"{sum_ab}")
 
 
 @app.command()
@@ -37,18 +39,19 @@ def compare(
 
     c_evaluation = STRING_TRUE if d_greater_c else STRING_FALSE
 
-    # TODO: add an if-else to write verbose output as a function of the callback setting
-    print(f"{d=} is {c_evaluation} than {c=}")
+    if state["verbose"]:
+        print(f"Will write verbose output\n{d=} is {c_evaluation} than {c=}")
+    else:
+        print(f"d > c: {d_greater_c}")
 
 
-# TODO: decorate this
-def main(
-    verbose,  # TODO: edit this
-):
+@app.callback()
+def main(verbose: bool = False):
     """
     Have sum fun with numbers.
     """
-    # TODO: inform user and set state according to user input about verbosity
+    if verbose:
+        state["verbose"] = True
 
 
 if __name__ == "__main__":
