@@ -1,6 +1,7 @@
 import typer
 
-# from typing_extensions import Annotated
+# The newer Annotated version passes locally, but not on the Pybites platform,
+# so I had to revert to the older syntax
 
 app = typer.Typer()
 
