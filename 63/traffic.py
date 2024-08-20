@@ -20,6 +20,15 @@ def traffic_light():
     return cycle((red, green, amber))
 
 
+def traffic_light_solution():
+    """Pybites solution is quite nice, it uses tuple unpacking
+    inside a list comprehension. Also zip"""
+    colors = ["red", "green", "amber"]
+    command = ["Stop", "Go", "Caution"]
+    timings = (2, 2, 0.5)
+    return cycle([State(*s) for s in zip(colors, command, timings)])
+
+
 if __name__ == "__main__":
     # print a sample of 10 states if run as standalone program
     for state in islice(traffic_light(), 10):
