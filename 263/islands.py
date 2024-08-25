@@ -1,3 +1,24 @@
+from rich import print
+
+LAND = 1
+
+
+def _get_adjacent_land(coord, grid_dict, row_count, col_count):
+    r, c = coord
+    adjacent = {coord}
+
+    if r + 1 < row_count and grid_dict[(r + 1, c)][0] == LAND:
+        adjacent.add((r + 1, c))
+    if r - 1 >= 0 and grid_dict[(r - 1, c)][0] == LAND:
+        adjacent.add((r - 1, c))
+    if c + 1 < col_count and grid_dict[(r, c + 1)][0] == LAND:
+        adjacent.add((r, c + 1))
+    if c - 1 >= 0 and grid_dict[(r, c - 1)][0] == LAND:
+        adjacent.add((r, c - 1))
+
+    return adjacent
+
+
 def count_islands(grid):
     """
     Input: 2D matrix, each item is [x, y] -> row, col.
@@ -7,10 +28,47 @@ def count_islands(grid):
     It's also preferred to check/mark the visited islands:
     - eg. using the helper function - mark_islands().
     """
-    # islands = 0         # var. for the counts
-    # .....some operations.....
-    # mark_islands(r, c, grid)
-    # return islands
+    islands = 0  # var. for the counts
+    row_count = len(grid)
+    col_count = 0 if row_count == 0 else len(grid[0])
+
+    grid_dict = {
+        (r, c): [item] for r, row in enumerate(grid) for c, item in enumerate(row)
+    }
+
+    for item in grid_dict.items():
+        key, value = item
+        if value[0] != LAND:
+            continue
+
+        grid_dict[key].append(_get_adjacent_land(key, grid_dict, row_count, col_count))
+    # for r, row in enumerate(squares):
+    #     for c, item in enumerate(row):
+    #         print(f"{(r, c)=}")
+    #         if item == 1:
+    #             right_val, right_island = grid_dict.get((r, c + 1), (0, 0))
+    #             left_val, left_island = grid_dict.get((r, c - 1), (0, 0))
+    #             up_val, up_island = grid_dict.get((r - 1, c), (0, 0))
+    #             down_val, down_island = grid_dict.get((r + 1, c), (0, 0))
+
+    #             if right_val == 1 and right_island > 0:
+    #                 grid_dict[(r, c)][1] = right_island
+
+    #             elif left_val == 1 and left_island > 0:
+    #                 grid_dict[(r, c)][1] = left_island
+
+    #             elif up_val == 1 and up_island > 0:
+    #                 grid_dict[(r, c)][1] = up_island
+
+    #             elif down_val == 1 and down_island > 0:
+    #                 grid_dict[(r, c)][1] = down_island
+
+    #             else:
+    #                 islands += 1
+    #                 grid_dict[(r, c)][1] = islands
+
+    print(grid_dict)
+    # print(f"{islands=}")
 
 
 def mark_islands(i, j, grid):
@@ -19,3 +77,8 @@ def mark_islands(i, j, grid):
     Output: None. Just mark the visited islands as in-place operation.
     """
     # grid[i][j] = '#'      # one way to mark visited ones - suggestion.
+
+
+if __name__ == "__main__":
+    squares = [[1, 1, 0, 1], [1, 1, 0, 1], [0, 0, 1, 1], [1, 1, 1, 0]]
+    count_islands(squares)
