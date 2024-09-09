@@ -1,4 +1,4 @@
-from rich import print
+from math import inf
 
 IMPOSSIBLE = "Mission impossible. No one can contribute."
 
@@ -60,3 +60,27 @@ def max_fund_pybites(village):
             best_end = current_end
     # index offset:  start + 1, end + 1
     return best_sum, best_start + 1, best_end + 1
+
+
+def kadane(data):
+    """
+    A rework after reading about Kadane's Algorithm.
+    A reasonable description of it can be found at:
+    https://algodaily.com/lessons/kadanes-algorithm-explained
+    """
+
+    local_max_sum, max_sum = 0, -inf
+    best_start, best_end = 0, 0
+
+    for current_end, item in enumerate(data):
+        if (work := local_max_sum + item) > item:
+            local_max_sum = work
+        else:
+            local_max_sum = item
+            current_start = current_end
+
+        if local_max_sum > max_sum:
+            max_sum = local_max_sum
+            best_start, best_end = current_start, current_end
+
+    return max_sum, best_start + 1, best_end + 1
